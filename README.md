@@ -117,3 +117,7 @@ Stated up front because they bound every claim this repository can make:
 Notes live in `literature-notes/`. Starting set: Ji et al. (2023) survey on hallucination in
 NLG; Bolukbasi et al. (2016) on embedding bias; Bender et al. (2021) "Stochastic Parrots";
 Perez et al. (2022) on red-teaming language models; Lin et al. (2022) TruthfulQA.
+
+## License
+
+This work by Tanvir Akhter Shakib is licensed under [CC BY 4.0](LICENSE) - share and adapt freely with attribution.
