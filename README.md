@@ -13,9 +13,10 @@ repeatable, and honest about its own limitations.
 hallucination-tests/   10 pre-registered prompts, one per documented failure mode
 bias-tests/            10 counterfactual prompt pairs (gender, ethnicity, age, class, ...)
 xai-experiments/       (planned) explainability: do model self-explanations match behaviour?
-prompt-reliability/    (planned) same prompt, paraphrased N ways: how stable is the answer?
+prompt-reliability/    10 paraphrase pairs: same question two ways, how stable is the answer?
 literature-notes/      reading notes on the papers that motivated each test
 results/               scoring.csv, RUBRIC.md, raw transcripts
+analysis/              analyze_scores.py - aggregates scoring.csv into summary.md + chart
 ```
 
 ## Problem
@@ -64,11 +65,19 @@ name, age, postcode-as-class, nationality, religion, disability, parental status
 is measured as **divergence between paired responses**, never from a single response. See
 `bias-tests/prompts.md`.
 
+### Prompt reliability suite (P01-P10)
+Ten paraphrase pairs: one question asked two ways (polarity flip, leading vs open framing,
+register shift, distractor context, option ordering, anchoring). Reliability is measured as
+agreement between paired answers. See `prompt-reliability/paraphrase_pairs.md`.
+
 ### Protocol
 - Every prompt runs 3 times per model; variance is reported, not averaged away.
 - Model name, version string, date, and temperature are recorded for every run.
 - Raw transcripts are saved; scores in `results/scoring.csv` link back to evidence.
 - Scoring uses a fixed 0/1/2 rubric (`results/RUBRIC.md`) written before data collection.
+- Aggregation is scripted, not manual: `python analysis/analyze_scores.py` writes
+  `results/summary.md` (mean, worst-case, and run-to-run consistency per category, per model,
+  per suite - never blended) and a chart once scored rows exist.
 
 ## Results
 
@@ -102,8 +111,8 @@ Stated up front because they bound every claim this repository can make:
 
 ## Future work
 
-- **Prompt reliability suite:** 5 paraphrases per factual question, measuring answer stability;
-  an answer that flips under paraphrase was never knowledge.
+- **Prompt reliability, full fan-out:** extend the implemented pairs to 5 paraphrases per
+  question; the pair scores indicate which question types to expand first.
 - **XAI experiments:** ask models to explain their own refusals and ratings, then test whether
   the stated reason predicts behaviour on a counterfactual (faithfulness testing).
 - **Multi-annotator scoring** with Cohen's kappa reported.
